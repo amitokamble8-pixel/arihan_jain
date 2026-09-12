@@ -1,0 +1,795 @@
+/* ==================================================================
+   styles.css — Vanya Agarwal portfolio
+   ------------------------------------------------------------------
+   White page, heavy grotesque display type, a single indigo accent,
+   hairline-bordered cards with a whisper of shadow, lavender tag
+   pills. Section order and class names match the reference file.
+   ------------------------------------------------------------------
+   1.  Tokens & reset
+   2.  Layout primitives
+   3.  Navigation
+   4.  Hero
+   5.  Buttons
+   6.  Section & page headings
+   7.  Cards — experience / project
+   8.  Award & interest rows
+   9.  Skills panel
+   10. Education & test scores
+   11. Detail page
+   12. Activities
+   13. About
+   14. Volunteering
+   15. Connect & contact
+   16. 404
+   17. Footer
+   18. Responsive
+   ================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+
+/* ==================================================================
+   1. TOKENS & RESET
+   ================================================================== */
+
+:root{
+  /* surfaces */
+  --bg:#f8fbfd;
+  --surface:#ffffff;
+  --surface-2:#fbfaff;
+  --chip:#f4f4f7;
+  --footer-bg:#eef3fd;
+
+  /* lines */
+  --line:#e4e4e5;
+  --line-soft:#f0f0f4;
+
+  /* type */
+  --ink:#0e1015;          /* display headings */
+  --text:#1a1c22;
+  --muted:#5d6270;
+  --dim:#8b8f9a;
+
+  /* accent — one indigo, used for the surname, links, stats, buttons */
+  --blue:#206ee4;
+  --blue-deep:#1457bc;
+  --blue-soft:#f9fbff;
+  --blue-line:#d2e4ff;
+  --accent:#206ee4;       /* alias — some rules reference --accent */
+  --gold:#206ee4;
+  --gold-glow:transparent;
+  --dot:transparent;
+
+  /* shadows — barely there */
+  --shadow-card:0 1px 2px rgba(14,16,21,.04);
+  --shadow-card-hover:0 4px 16px -4px rgba(14,16,21,.10);
+  --shadow-pill:0 1px 3px rgba(14,16,21,.05);
+
+  /* type families — one family throughout.
+     All three names are kept so no rule needs rewriting. */
+  --font-display:"Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-sans:"Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono:"Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+html{scroll-behavior:smooth}
+
+body{
+  color:var(--text);
+  font-family:var(--font-sans);
+  letter-spacing:-.006em;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+  background-color:var(--bg);
+  background-image:none;
+}
+
+a{color:inherit;text-decoration:none}
+button{font-family:inherit}
+:focus-visible{outline:2px solid var(--blue);outline-offset:3px;border-radius:6px}
+
+@keyframes rise{
+  from{opacity:0;transform:translateY(16px)}
+  to{opacity:1;transform:none}
+}
+
+
+/* ==================================================================
+   2. LAYOUT PRIMITIVES
+   ================================================================== */
+
+.app{display:flex;flex-direction:column;min-height:100vh}
+main{flex:1}
+
+.section{max-width:1180px;margin:0 auto;padding:64px 40px}
+
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:stretch}
+.grid-3.tight{gap:18px}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;align-items:stretch}
+.grid-2.spaced{margin-top:32px}
+.stack{display:flex;flex-direction:column;gap:18px}
+
+.reveal{
+  opacity:0;transform:translateY(16px);height:100%;
+  transition:opacity .55s ease, transform .55s cubic-bezier(.2,.7,.2,1);
+}
+.reveal.in{opacity:1;transform:none}
+
+.rule{height:1px;background:var(--line);border:0}
+
+
+/* ==================================================================
+   3. NAVIGATION
+   ================================================================== */
+
+.nav-wrap{
+  position:sticky;top:0;z-index:60;
+  display:flex;align-items:center;gap:24px;
+  padding:16px 40px;
+  background:rgba(255,255,255,.94);backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+}
+
+.brand{font-weight:700;font-size:22px;letter-spacing:-.03em;color:var(--text)}
+.brand span{color:var(--accent)}
+
+/* plain centred links — no pill container in this theme */
+.pill{
+  display:flex;align-items:center;gap:2px;
+  padding:0;border-radius:0;
+  background:none;border:0;
+  margin:0 auto;
+}
+.pill-item{position:relative;padding-bottom:2px}
+.pill-link{
+  display:inline-flex;align-items:center;
+  padding:8px 14px;border-radius:var(--r-sm);
+  font-size:15px;font-weight:500;color:var(--muted);
+  background:none;border:0;cursor:pointer;white-space:nowrap;
+  transition:color .18s,background .18s;
+}
+.pill-link:hover{color:var(--text)}
+.pill-link.active{color:var(--text);font-weight:600;background:none}
+/* the standout action, styled like the screenshot's blue Login pill */
+.pill-link.cv{
+  color:#fff;font-weight:600;gap:6px;
+  background:var(--accent);border-radius:999px;padding:8px 20px;}
+.pill-link.cv:hover{background:var(--blue-deep);transform:translateY(-1px)}
+
+.pill-divider{width:1px;height:16px;background:var(--line);margin:0 8px}
+
+/* dropdown */
+.dropdown{
+  position:absolute;top:calc(100% + 10px);left:50%;transform:translateX(-50%);
+  min-width:180px;padding:6px;border-radius:8px;
+  background:#fff;border:1px solid var(--line);
+  box-shadow:0 10px 26px rgba(13,17,23,.09);
+  animation:drop .16s ease;
+}
+.dropdown::before{content:"";position:absolute;left:0;right:0;top:-12px;height:12px}
+.dropdown a{display:block;padding:9px 12px;border-radius:var(--r-sm);font-size:13.5px;color:var(--muted)}
+.dropdown a:hover{background:var(--accent-soft);color:var(--accent)}
+
+@keyframes drop{
+  from{opacity:0;transform:translate(-50%,-6px)}
+  to{opacity:1;transform:translate(-50%,0)}
+}
+
+/* socials + mobile */
+.nav-socials{display:flex;align-items:center;gap:14px;color:var(--muted);position:static}
+.nav-socials a:hover{color:var(--accent)}
+
+.burger{
+  display:none;flex-direction:column;gap:4px;
+  background:none;border:0;cursor:pointer;padding:8px;
+}
+.burger span{width:20px;height:2px;background:var(--text);border-radius:2px}
+
+.mobile-menu{
+  position:absolute;top:100%;left:0;right:0;
+  display:flex;flex-direction:column;padding:8px 24px 16px;
+  background:#fff;border-bottom:1px solid var(--line);
+  box-shadow:0 12px 24px rgba(13,17,23,.06);
+}
+.mobile-menu a{
+  padding:12px 0;font-size:15px;color:var(--muted);
+  border-bottom:1px solid var(--line-soft);
+}
+.mobile-menu a.active{color:var(--accent);font-weight:600}
+
+
+/* ==================================================================
+   4. HERO
+   ================================================================== */
+
+.hero{padding:72px 0 40px}
+.hero-inner{max-width:1200px;margin:0 auto;padding:0 40px;text-align:center}
+
+.hero-eyebrow{
+  display:inline-block;
+  font-size:13px;font-weight:700;
+  letter-spacing:.16em;text-transform:uppercase;color:var(--blue);
+  animation:rise .7s cubic-bezier(.2,.7,.2,1) both;
+}
+
+/* huge, tight, uppercase — surname in indigo */
+.hero-name{
+  display:block;margin-top:10px;
+  font-family:var(--font-display);font-weight:800;text-transform:uppercase;
+  font-size:110px;line-height:.98;letter-spacing:-.045em;
+  color:var(--ink);
+  animation:rise .7s .06s cubic-bezier(.2,.7,.2,1) both;
+}
+.hero-name .ln-1{font-weight:800;color:var(--ink)}
+.hero-name .ln-2{font-style:normal;font-weight:800;color:var(--blue);margin-left:.14em}
+
+.hero-tag{
+  margin-top:24px;
+  font-size:17px;font-weight:500;color:var(--muted);letter-spacing:-.02em;
+  animation:rise .7s .12s cubic-bezier(.2,.7,.2,1) both;
+}
+
+.hero-bio{
+  margin:30px auto 0;max-width:750px;
+  font-size:17.5px;line-height:1.85;color:var(--muted);
+  text-align:center;hyphens:none;
+  animation:rise .7s .18s cubic-bezier(.2,.7,.2,1) both;
+}
+
+/* hairline above the buttons, as in the screenshot */
+.hero .cta-row{
+  justify-content:center;
+  max-width:940px;margin:34px auto 0;padding-top:32px;
+  border-top:1px solid var(--line);
+  animation:rise .7s .24s cubic-bezier(.2,.7,.2,1) both;
+}
+.hero .tags{justify-content:center}
+
+
+/* ==================================================================
+   5. BUTTONS
+   ================================================================== */
+
+.cta-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:28px;justify-content:flex-start}
+
+.btn{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:14px 30px;border-radius:999px;
+  font-size:15.5px;font-weight:700;letter-spacing:-.01em;
+  transition:background .18s, border-color .18s, color .18s, transform .18s;
+}
+.btn-primary{background:var(--blue);color:#fff;box-shadow:0 6px 18px -8px #898989}
+.btn-primary:hover{background:var(--blue-deep);transform:translateY(-1px)}
+/* soft lavender secondary */
+.btn-ghost{background:var(--blue-soft);border:1px solid var(--blue-line);color:var(--blue)}
+.btn-ghost:hover{background:#fffbf8;border-color:var(--blue);transform:translateY(-1px)}
+
+/* inline "more" link under a section */
+.more-link{
+  display:inline-flex;align-items:center;gap:8px;margin-top:26px;
+  font-size:15px;font-weight:600;color:var(--blue);
+  transition:gap .18s, color .18s;
+}
+.more-link:hover{gap:13px;color:var(--blue-deep)}
+
+
+/* ==================================================================
+   6. SECTION & PAGE HEADINGS
+   ================================================================== */
+
+.sec-head{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:24px;flex-wrap:wrap;
+}
+.sec-head h2{
+  font-family:var(--font-display);font-weight:800;
+  font-size:clamp(26px,3vw,33px);letter-spacing:-.04em;color:var(--ink);
+}
+.sec-eyebrow{
+  font-size:12px;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
+}
+/* no visible rule under section headings — kept for spacing only */
+.sec-rule{height:1px;background:var(--line);border:0;margin:24px 0 24px}
+
+.page-head{margin-bottom:10px}
+.page-head h1{
+  font-family:var(--font-display);font-weight:800;
+  font-size:clamp(24px,4.4vw,50px);letter-spacing:-.045em;color:var(--ink);
+}
+.page-head p{margin-top:16px;color:var(--muted);font-size:16.5px;max-width:70ch;line-height:1.8}
+
+/* sub-heading inside a page */
+.sub-head{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:24px;flex-wrap:wrap;margin-top:64px;
+}
+.sub-head h2{
+  font-family:var(--font-display);font-weight:800;font-size:24px;
+  letter-spacing:-.035em;color:var(--ink);
+}
+.sub-rule{height:1px;background:transparent;border:0;margin:12px 0 22px}
+
+
+/* ==================================================================
+   7. CARDS — EXPERIENCE / PROJECT
+   ================================================================== */
+
+.card{
+  display:flex;flex-direction:column;height:100%;
+  padding:26px 28px;border-radius:14px;
+  background:var(--surface);border:1px solid var(--line);
+  box-shadow:var(--shadow-card);
+  transition:border-color .2s, box-shadow .2s, background .2s;
+}
+.card:hover{
+  transform:none;border-color:var(--blue-line);
+  background:#ffffff;box-shadow:var(--shadow-card-hover);
+}
+.card-link{display:flex}
+
+.card h3{
+  font-family:var(--font-display);font-weight:650;font-size:19px;
+  line-height:1.35;letter-spacing:-.03em;color:var(--ink);
+}
+/* the small tracked caps line under the title */
+.card-org{
+  margin-top:9px;font-size:12.5px;font-weight:700;
+  letter-spacing:.11em;text-transform:uppercase;color:var(--dim);line-height:1.5;
+}
+
+/* sits inline at the end of the meta line */
+.chip{
+  display:inline-flex;align-items:center;
+  align-self:flex-start;margin: 10px 0 0 0;margin-left:0px;
+  padding:6px 14px;border-radius:999px;
+  background:var(--surface);color:var(--text);border:1px solid var(--line);
+  font-size:12.5px;font-weight:500;
+  letter-spacing:0;text-transform:none;vertical-align:middle;
+}
+
+.meta-line{
+  margin-top:16px;
+  font-size:14.5px;line-height:1.9;color:var(--muted);
+}
+
+.card-desc{margin-top:16px;font-size:15.5px;line-height:1.65;color:var(--muted)}
+
+/* divider above the tag row on project cards */
+.tags{
+  display:flex;flex-wrap:wrap;gap:10px;
+  margin-top:auto;padding-top:20px;border-top:1px solid var(--line-soft);
+}
+.tags.flush{margin-top:18px;padding-top:0;border-top:0}
+.tags.centered{justify-content:center;margin-top:20px;padding-top:0;border-top:0}
+.tag{
+  padding:8px 16px;border-radius:999px;
+  background:var(--blue-soft);color:#312a6b;border:1px solid var(--blue-line);
+  font-size:13.5px;font-weight:500;line-height:1.2;
+}
+.tag-more{
+  cursor:pointer;font-family:var(--font-sans);font-weight:600;
+  color:var(--blue);
+}
+.tag-more:hover{background:#e6eaff}
+
+.card-links{display:flex;flex-wrap:wrap;gap:20px;margin-top:18px}
+.card-links a{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:14.5px;font-weight:600;color:var(--blue);
+}
+.card-links a:hover{color:var(--blue-deep)}
+
+/* bullet lists inside cards */
+.bullets{list-style:none;margin-top:16px;display:flex;flex-direction:column;gap:9px}
+.bullets li{display:flex;gap:11px;font-size:14.5px;line-height:1.65;color:var(--muted)}
+.bullets.small li{font-size:14px}
+.bullet-arrow{flex-shrink:0;color:var(--blue);opacity:.65}
+
+
+/* ==================================================================
+   8. AWARD & INTEREST ROWS
+   ------------------------------------------------------------------
+   Both render as bordered cards rather than hairline-separated rows.
+   ================================================================== */
+
+.row-list{display:flex;flex-direction:column;gap:16px}
+
+.award-row{
+  display:flex;align-items:flex-start;gap:16px;height:100%;
+  padding:22px 24px;border-radius:14px;
+  background:var(--surface);border:1px solid var(--line);
+  box-shadow:var(--shadow-card);
+  transition:border-color .2s, box-shadow .2s, background .2s;
+}
+/* the reference separated stacked rows with a rule; cards don't need it */
+.award-row + .award-row{border-top:1px solid var(--line)}
+a.award-row:hover{
+  background:var(--surface-2);border-color:var(--blue-line);
+  box-shadow:var(--shadow-card-hover);
+}
+
+.award-ico{font-size:24px;line-height:1.25;flex-shrink:0}
+
+/* title stacked above its meta line */
+.award-title{
+  display:flex;flex-direction:column;align-items:flex-start;
+  flex-wrap:nowrap;gap:6px;
+  font-family:var(--font-display);font-weight:800;font-size:17px;
+  letter-spacing:-.03em;color:var(--ink);line-height:1.35;
+}
+.award-meta{
+  font-family:var(--font-sans);font-size:14.5px;font-weight:400;
+  letter-spacing:0;text-transform:none;color:var(--muted);
+}
+.award-desc{margin-top:10px;font-size:15px;line-height:1.7;color:var(--muted);max-width:82ch}
+
+.ext-mark{color:var(--blue);opacity:.8;margin-left:3px}
+
+/* interest rows — same card treatment, title over description */
+.article-row{
+  display:flex;flex-direction:column;align-items:flex-start;
+  justify-content:flex-start;gap:0;
+  padding:24px 28px;border-radius:14px;
+  background:var(--surface);border:1px solid var(--line);
+  box-shadow:var(--shadow-card);
+  transition:border-color .2s, box-shadow .2s, background .2s;
+}
+.article-row:hover{
+  background:var(--surface-2);border-color:var(--blue-line);
+  box-shadow:var(--shadow-card-hover);
+}
+.article-row + .article-row{border-top:1px solid var(--line)}
+.article-row h3{
+  font-family:var(--font-display);font-weight:800;font-size:17.5px;
+  letter-spacing:-.03em;color:var(--ink);
+}
+.article-outlet{
+  display:block;margin-top:10px;
+  font-size:15.5px;line-height:1.65;color:var(--muted);max-width:90ch;
+}
+.article-date{
+  display:block;margin-top:8px;
+  font-size:14px;letter-spacing:0;text-transform:none;color:var(--dim);
+}
+
+
+/* ==================================================================
+   9. SKILLS PANEL
+   ------------------------------------------------------------------
+   Frameless; each group's items render as soft chips.
+   ================================================================== */
+
+.skills-panel{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(228px,1fr));
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:16px;box-shadow:var(--shadow-card);overflow:hidden;
+}
+.skill-col{padding:34px 32px;border-left:1px solid var(--line)}
+.skill-col:first-child{border-left:0}
+.skill-label{
+  padding-bottom:18px;border-bottom:1px solid var(--line);
+  font-family:var(--font-mono);font-size:12px;font-weight:800;
+  letter-spacing:.17em;text-transform:uppercase;color:var(--blue);
+}
+.skill-items{list-style:none;margin-top:22px;display:flex;flex-direction:column;gap:17px}
+.skill-items li{font-size:15px;line-height:1.4;color:var(--text);font-weight:500}
+
+
+/* ==================================================================
+   10. EDUCATION & TEST SCORES
+   ================================================================== */
+
+.edu-card{
+  padding:26px 28px;border-radius:14px;
+  background:var(--surface);border:1px solid var(--line);
+  box-shadow:var(--shadow-card);
+  transition:border-color .2s, box-shadow .2s, background .2s;
+}
+.edu-card:hover{
+  transform:none;border-color:var(--blue-line);
+  background:var(--surface-2);box-shadow:var(--shadow-card-hover);
+}
+.edu-top{display:flex;align-items:baseline;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.edu-top h3{
+  font-family:var(--font-display);font-weight:800;font-size:19px;
+  letter-spacing:-.03em;color:var(--ink);
+}
+.edu-dates{
+  font-size:14px;letter-spacing:0;text-transform:none;color:var(--dim);
+}
+.edu-loc{
+  margin-top:9px;font-size:12.5px;font-weight:700;
+  letter-spacing:.11em;text-transform:uppercase;color:var(--dim);
+}
+.edu-level{margin-top:12px;font-size:14.5px;color:var(--muted)}
+.edu-label{
+  margin-top:22px;font-size:12.5px;font-weight:700;
+  letter-spacing:.11em;text-transform:uppercase;color:var(--dim);
+}
+
+.score-card{
+  padding:26px 28px;border-radius:14px;
+  background:var(--surface);border:1px solid var(--line);
+  box-shadow:var(--shadow-card);
+}
+.score-head{display:flex;align-items:baseline;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.score-head h3{
+  font-family:var(--font-display);font-weight:800;font-size:19px;
+  letter-spacing:-.03em;color:var(--ink);
+}
+.score-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:12px;
+  margin-top:20px;background:transparent;
+  border:0;border-radius:0;overflow:visible;
+}
+.score-grid div{
+  padding:20px 18px;border-radius:12px;
+  background:var(--bg);border:1px solid var(--line);text-align:center;
+}
+.score-grid span{
+  display:block;font-size:20px;
+  letter-spacing:0;text-transform:none;font-weight:600;color:var(--muted);
+}
+.score-grid strong{
+  display:block;margin-top:8px;font-family:var(--font-display);
+  font-size:20px;font-weight:400;color:var(--blue);letter-spacing:-.04em;
+}
+
+
+/* ==================================================================
+   11. DETAIL PAGE
+   ================================================================== */
+
+.back-link{
+  display:inline-flex;align-items:center;gap:8px;margin-bottom:32px;
+  font-size:14.5px;font-weight:600;
+  letter-spacing:0;text-transform:none;color:var(--blue);
+  transition:color .18s;
+}
+.back-link:hover{color:var(--blue-deep)}
+
+.detail-head{margin-bottom:32px}
+.detail-head h1{
+  font-family:var(--font-display);font-weight:800;
+  font-size:clamp(30px,4.2vw,46px);letter-spacing:-.045em;line-height:1.08;color:var(--ink);
+}
+.detail-org{
+  margin-top:12px;font-size:13px;font-weight:700;
+  letter-spacing:.11em;text-transform:uppercase;color:var(--dim);
+}
+.detail-meta{
+  display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:14px;
+  font-size:14.5px;color:var(--muted);
+}
+.detail-meta .dot-sep{opacity:.6}
+
+.detail-panel{
+  padding:32px 34px;border-radius:14px;
+  background:var(--surface);border:1px solid var(--line);
+  box-shadow:var(--shadow-card);
+}
+.detail-panel h2{
+  font-family:var(--font-display);font-size:12.5px;font-weight:700;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--blue);
+  padding-bottom:14px;margin-bottom:20px;border-bottom:1px solid var(--line-soft);
+}
+.detail-panel h2:not(:first-child){margin-top:38px}
+.detail-panel p{color:var(--muted);font-size:15.5px;line-height:1.8}
+
+
+/* ==================================================================
+   12. ACTIVITIES
+   ================================================================== */
+
+.sport-card{
+  display:block;height:100%;padding:26px 28px;border-radius:14px;
+  background:var(--surface);border:1px solid var(--line);
+  box-shadow:var(--shadow-card);
+  transition:border-color .2s, box-shadow .2s, background .2s;
+}
+.sport-card:hover{
+  transform:none;border-color:var(--blue-line);
+  background:var(--surface-2);box-shadow:var(--shadow-card-hover);
+}
+.sport-card h4{
+  font-family:var(--font-display);font-weight:800;font-size:18px;
+  letter-spacing:-.03em;color:var(--ink);
+}
+.sport-card p{margin-top:10px;font-size:15px;line-height:1.7;color:var(--muted)}
+
+
+/* ==================================================================
+   13. ABOUT
+   ================================================================== */
+
+.about-split{
+  display:grid;grid-template-columns:1fr minmax(250px,330px);
+  gap:56px;align-items:start;
+}
+.about-split .prose{max-width:none}
+
+.prose{max-width:74ch}
+.prose p{
+  color:var(--muted);font-size:17px;line-height:1.85;margin-bottom:22px;
+  text-align:justify;hyphens:none;
+}
+/* opening paragraph reads as a lede */
+.prose p:first-child{color:var(--ink);font-size:20px;line-height:1.65;letter-spacing:-.02em;font-weight:500}
+
+.about-photo{position:sticky;top:104px}
+.about-photo img{
+  width:100%;aspect-ratio:4/5;object-fit:cover;object-position:center 25%;
+  border-radius:14px;display:block;border:1px solid var(--line);
+  box-shadow:var(--shadow-card);
+}
+.about-photo figcaption{
+  margin-top:14px;font-size:12.5px;font-weight:700;
+  letter-spacing:.11em;text-transform:uppercase;color:var(--dim);
+}
+
+
+/* ==================================================================
+   14. VOLUNTEERING
+   ================================================================== */
+
+.vol-panel{
+  padding:48px 40px;border-radius:14px;
+  background:var(--surface);border:1px solid var(--line);
+  box-shadow:var(--shadow-card);
+}
+.vol-stats{display:flex;flex-wrap:wrap;justify-content:center;gap:100px}
+.vol-stats div{text-align:center}
+.vol-stats strong{
+  display:block;font-family:var(--font-display);font-weight:800;
+  font-size:44px;letter-spacing:-.05em;color:var(--blue);line-height:1;
+}
+.vol-stats span{
+  display:block;margin-top:12px;font-size:15px;
+  letter-spacing:0;text-transform:none;color:var(--muted);
+}
+
+.vol-orgs{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:42px}
+.vol-chip{
+  padding:13px 24px;border-radius:999px;
+  background:var(--surface);color:var(--text);border:1px solid var(--line);
+  font-size:15px;
+}
+
+
+/* ==================================================================
+   15. CONNECT & CONTACT
+   ================================================================== */
+
+.connect{
+  padding:64px 40px;border-radius:14px;text-align:center;
+  background:var(--surface);border:1px solid var(--line);
+  box-shadow:var(--shadow-card);
+}
+.connect-title{
+  font-family:var(--font-display);font-weight:800;
+  font-size:clamp(30px,4vw,42px);letter-spacing:-.045em;color:var(--ink);
+}
+.connect p{max-width:66ch;margin:20px auto 0;color:var(--muted);font-size:16.5px;line-height:1.8}
+.connect .cta-row{justify-content:center;border-top:0;padding-top:0;margin-top:30px}
+
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:16px}
+.contact-card{
+  display:flex;align-items:center;gap:18px;padding:24px 26px;border-radius:14px;
+  background:var(--surface);border:1px solid var(--line);color:var(--blue);
+  box-shadow:var(--shadow-card);
+  transition:border-color .2s, box-shadow .2s, background .2s;
+}
+.contact-card:hover{
+  transform:none;border-color:var(--blue-line);
+  background:var(--surface-2);box-shadow:var(--shadow-card-hover);
+}
+.contact-card h4{
+  font-family:var(--font-display);font-weight:800;font-size:16px;
+  letter-spacing:-.03em;color:var(--ink);
+}
+.contact-card p{margin-top:5px;font-size:14px;color:var(--muted)}
+
+
+/* ==================================================================
+   16. 404
+   ================================================================== */
+
+.notfound{text-align:center;padding-top:130px;padding-bottom:140px}
+.notfound h1{
+  font-family:var(--font-display);font-weight:800;font-size:96px;
+  letter-spacing:-.06em;color:var(--blue);
+}
+.notfound p{margin:16px 0 32px;color:var(--muted);font-size:16.5px}
+.notfound .cta-row{justify-content:center;border-top:0;padding-top:0}
+
+
+/* ==================================================================
+   17. FOOTER
+   ================================================================== */
+
+.footer{
+  margin-top:56px;padding:64px 40px 28px;
+  background:var(--footer-bg);border-top:1px solid var(--blue-line);
+}
+
+.footer-grid{
+  max-width:1180px;margin:0 auto;
+  display:grid;grid-template-columns:1.7fr 1fr 1fr 1fr;gap:48px;
+}
+.footer-brand{
+  display:inline-block;font-family:var(--font-display);
+  font-size:27px;font-weight:800;letter-spacing:-.04em;color:var(--ink);
+}
+.footer-brand span{color:var(--blue)}
+.footer-tag{margin-top:18px;max-width:36ch;color:var(--muted);font-size:16px;line-height:1.65}
+.footer-loc{margin-top:16px;font-size:14.5px;color:var(--dim)}
+
+.footer h5{
+  margin-bottom:20px;font-family:var(--font-display);font-size:16px;font-weight:800;
+  letter-spacing:-.03em;text-transform:none;color:var(--ink);
+}
+.footer-grid a:not(.footer-brand){
+  display:flex;align-items:center;gap:7px;margin-bottom:14px;
+  font-size:15.5px;color:var(--muted);
+}
+.footer-grid a:not(.footer-brand):hover{color:var(--blue)}
+
+.footer-bottom{
+  max-width:1180px;margin:44px auto 0;padding-top:22px;
+  border-top:1px solid var(--line);
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
+  gap:14px;color:var(--dim);font-size:14px;
+}
+.heart{color:var(--blue)}
+
+
+/* ==================================================================
+   18. RESPONSIVE
+   ================================================================== */
+
+@media (max-width:1080px){
+  .pill{display:none}
+  .nav-socials{right:76px}
+  .burger{display:flex}
+  .grid-3{grid-template-columns:1fr 1fr}
+  .footer-grid{grid-template-columns:1fr 1fr;gap:36px}
+}
+
+@media (max-width:900px){
+  .about-split{grid-template-columns:1fr;gap:34px}
+  .about-photo{position:static;max-width:280px}
+  .skills-panel{grid-template-columns:1fr}
+  .skill-col{border-left:0;border-top:0}
+  .skill-col:first-child{border-top:0}
+}
+
+@media (max-width:680px){
+  .section{padding:48px 20px}
+  .hero{padding:48px 0 24px}
+  .hero-inner{padding:0 20px}
+  .hero-tag{font-size:17px}
+  .hero-bio{text-align:center;font-size:16px}
+  .hero .cta-row{padding-top:26px;margin-top:28px}
+  .prose p{text-align:left;font-size:16px}
+  .prose p:first-child{font-size:18px}
+  .nav-wrap{padding:18px 20px}
+  .nav-socials{right:72px;gap:14px}
+  .burger{right:20px}
+  .grid-3,.grid-2,.footer-grid{grid-template-columns:1fr}
+  .score-grid{grid-template-columns:1fr}
+  .vol-stats{gap:34px}
+  .vol-panel,.connect{padding:36px 22px}
+  .card,.edu-card,.score-card{padding:22px 20px}
+  .detail-panel{padding:26px 22px}
+  .award-row{gap:14px;padding:20px 18px}
+  .article-row{padding:20px 20px}
+  .cta-row .btn{flex:1 1 auto;justify-content:center}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .reveal{opacity:1;transform:none}
+}

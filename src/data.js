@@ -31,7 +31,7 @@ export const PROFILE = {
   },
   cv: "/arihan_jain_resume.pdf", 
   photo: "",
-  aboutPhoto: "/placeholder-about.jpg",
+  aboutPhoto: "",
 };
 
 export const NAV = [

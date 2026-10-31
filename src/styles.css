@@ -605,13 +605,7 @@ a.award-row:hover{
    13. ABOUT
    ================================================================== */
 
-.about-split{
-  display:grid;grid-template-columns:1fr minmax(250px,330px);
-  gap:56px;align-items:start;
-}
-.about-split .prose{max-width:none}
-
-.prose{max-width:74ch}
+.prose{max-width:120ch}
 .prose p{
   color:var(--muted);font-size:17px;line-height:1.85;margin-bottom:22px;
   text-align:justify;hyphens:none;
